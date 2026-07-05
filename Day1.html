@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day I — Flowcharts · MAANG Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,700;9..144,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <style>
+    :root {
+      --bg: #f3ebd9;
+      --bg-2: #faf3e2;
+      --bg-code: #e9dec3;
+      --ink: #1c1813;
+      --ink-2: #4a4338;
+      --ink-3: #847a64;
+      --rule: #c9be9f;
+      --rule-soft: #ddd1b3;
+      --accent: #8a2317;
+      --gold: #a87714;
+      --sage: #5d7440;
+      --rust-red: #b03a2e;
+      --rust-green: #4a7c3c;
+    }
+    [data-theme="dim"] {
+      --bg: #181410;
+      --bg-2: #211c15;
+      --bg-code: #2a2318;
+      --ink: #e6dec8;
+      --ink-2: #b5aa94;
+      --ink-3: #7a6f5c;
+      --rule: #3a3228;
+      --rule-soft: #2e2720;
+      --accent: #d8a070;
+      --gold: #c4a24e;
+      --sage: #7a9a5c;
+      --rust-red: #c4644e;
+      --rust-green: #5c9a4c;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Newsreader', serif;
+      background: var(--bg);
+      color: var(--ink);
+      font-feature-settings: "kern", "liga", "onum";
+      line-height: 1.75;
+      overflow-x: hidden;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    .paper-grain {
+      position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+      opacity: 0.35; mix-blend-mode: multiply;
+      width: 100%; height: 100%;
+    }
+    [data-theme="dim"] .paper-grain {
+      opacity: 0.12; mix-blend-mode: screen;
+    }
+
+    .font-display { font-family: 'Fraunces', serif; }
+    .font-body { font-family: 'Newsreader', serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .small-caps { font-variant: small-caps; letter-spacing: 0.1em; }
+    .label {
+      font-family: 'Newsreader', serif;
+      font-variant: small-caps;
+      letter-spacing: 0.12em;
+      font-size: 11px;
+      color: var(--ink-3);
+    }
+    .drop-cap::first-letter {
+      font-family: 'Fraunces', serif;
+      font-size: 64px; font-weight: 900;
+      float: left; line-height: 0.78;
+      margin-right: 8px; margin-top: 6px;
+      color: var(--accent);
+    }
+    h1 em, h2 em, h3 em {
+      font-style: italic; font-weight: 400; color: var(--accent);
+    }
+
+    .masthead {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--rule);
+      transition: background 0.4s ease, border-color 0.4s ease;
+    }
+    .progress-bar {
+      position: absolute; bottom: 0; left: 0;
+      height: 2px; background: var(--accent); width: 0%;
+      transition: width 0.05s linear;
+    }
+
+    .ornament {
+      color: var(--rule); font-family: 'Fraunces', serif;
+      font-size: 22px; text-align: center; padding: 2.5rem 0;
+      user-select: none; transition: color 0.4s ease;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--ink); color: var(--bg);
+      font-family: 'Newsreader', serif; font-variant: small-caps;
+      letter-spacing: 0.1em; font-size: 13px;
+      padding: 12px 28px; border: 1px solid var(--ink);
+      cursor: pointer; text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover { background: var(--accent); border-color: var(--accent); }
+    .btn-primary:hover .btn-arrow { transform: translateX(3px); }
+    .btn-arrow { transition: transform 0.3s ease; display: inline-block; }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: transparent; color: var(--ink-3);
+      font-family: 'Newsreader', serif; font-variant: small-caps;
+      letter-spacing: 0.1em; font-size: 13px;
+      padding: 8px 0; border: none; cursor: pointer;
+      text-decoration: none; border-bottom: 1px solid var(--ink-3);
+      transition: all 0.3s ease;
+    }
+    .btn-ghost:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+    .btn-toggle {
+      font-family: 'Newsreader', serif; font-variant: small-caps;
+      letter-spacing: 0.1em; font-size: 12px;
+      padding: 8px 20px; border: 1px solid var(--rule);
+      background: transparent; color: var(--ink-2);
+      cursor: pointer; transition: all 0.3s ease;
+    }
+    .btn-toggle:hover { background: var(--bg-2); }
+
+    .theme-btn {
+      background: transparent; border: 1px solid var(--rule);
+      color: var(--ink-3); padding: 5px 12px; cursor: pointer;
+      font-family: 'Newsreader', serif; font-variant: small-caps;
+      letter-spacing: 0.1em; font-size: 11px;
+      transition: all 0.3s ease;
+    }
+    .theme-btn:hover { border-color: var(--ink-3); color: var(--ink); }
+
+    .hover-block {
+      transition: all 0.35s ease;
+      margin: 0; padding: 16px 20px;
+      border-left: 2px solid transparent;
+      cursor: default;
+    }
+    .hover-block:hover {
+      margin-left: -20px; margin-right: -20px;
+      padding-left: 20px; padding-right: 20px;
+      background: var(--bg-2);
+      border-left-color: var(--accent);
+    }
+
+    .shape-card {
+      border: 1px solid var(--rule); padding: 2.5rem 2rem;
+      transition: all 0.3s ease; background: var(--bg);
+    }
+    .shape-card:hover { background: var(--bg-2); }
+
+    .code-block {
+      background: var(--bg-code); border-left: 2px solid var(--accent);
+      padding: 1rem 1.25rem; font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px; line-height: 1.7; overflow-x: auto;
+      transition: background 0.4s ease, border-color 0.4s ease;
+    }
+    .code-block .kw { color: var(--accent); }
+    .code-block .str { color: var(--sage); }
+    .code-block .cmt { color: var(--ink-3); font-style: italic; }
+    .code-block .num { color: var(--gold); }
+
+    /* ── Practice Sheet ── */
+    .practice-item {
+      border-bottom: 1px dotted var(--rule);
+      transition: background 0.3s ease;
+    }
+    .practice-item:last-child { border-bottom: none; }
+
+    .practice-header {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 1.5rem 0; cursor: default;
+    }
+
+    .q-number {
+      font-family: 'Fraunces', serif; font-weight: 900;
+      font-size: 14px; color: var(--ink-3); min-width: 28px;
+      padding-top: 3px; font-variant: small-caps;
+      letter-spacing: 0.05em;
+    }
+
+    .q-content { flex: 1; }
+
+    .q-title-row {
+      display: flex; align-items: center; gap: 10px;
+      flex-wrap: wrap; margin-bottom: 0.5rem;
+    }
+
+    .q-title {
+      font-family: 'Fraunces', serif; font-weight: 700;
+      font-size: 18px; font-variation-settings: 'opsz' 36;
+      line-height: 1.3;
+    }
+
+    .badge {
+      font-family: 'Newsreader', serif; font-variant: small-caps;
+      letter-spacing: 0.08em; font-size: 9px;
+      padding: 2px 8px; border: 1px solid var(--rule);
+      color: var(--ink-3); transition: all 0.3s ease;
+    }
+    .badge-easy { border-color: var(--sage); color: var(--sage); }
+    .badge-medium { border-color: var(--gold); color: var(--gold); }
+    .badge-hard { border-color: var(--rust-red); color: var(--rust-red); }
+
+    .hint-text {
+      font-size: 13px; color: var(--ink-3); font-style: italic;
+      margin-bottom: 1rem; line-height: 1.6;
+    }
+
+    .q-actions {
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+
+    .btn-show {
+      font-family: 'Newsreader', serif; font-variant: small-caps;
+      letter-spacing: 0.1em; font-size: 11px;
+      padding: 6px 16px; border: 1px solid var(--rule);
+      background: transparent; color: var(--ink-2);
+      cursor: pointer; transition: all 0.3s ease;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-show:hover { background: var(--bg-2); border-color: var(--ink-3); }
+    .btn-show.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    .btn-show .arrow-icon { transition: transform 0.3s ease; display: inline-block; font-size: 10px; }
+    .btn-show.active .arrow-icon { transform: rotate(90deg); }
+
+    .panel {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease;
+      padding: 0 0 0 44px;
+    }
+    .panel.open {
+      max-height: 800px;
+      padding: 0 0 1.5rem 44px;
+    }
+
+    .panel-inner {
+      border: 1px solid var(--rule);
+      background: var(--bg-2);
+      padding: 1.25rem;
+      transition: background 0.4s ease, border-color 0.4s ease;
+    }
+
+    .panel-label {
+      font-family: 'Newsreader', serif; font-variant: small-caps;
+      letter-spacing: 0.12em; font-size: 10px;
+      color: var(--ink-3); margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule-soft);
+    }
+
+    .step-list { list-style: none; padding: 0; margin: 0; }
+    .step-list li {
+      padding: 6px 0 6px 16px; position: relative;
+      font-size: 13px; color: var(--ink-2); line-height: 1.6;
+      border-left: 2px solid var(--rule);
+      margin-left: 4px;
+    }
+    .step-list li:last-child { border-left-color: transparent; }
+    .step-list li::before {
+      content: ''; position: absolute; left: -5px; top: 12px;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--rule); border: 1px solid var(--bg-2);
+    }
+
+    .step-tag {
+      font-family: 'JetBrains Mono', monospace; font-size: 9px;
+      padding: 1px 5px; border: 1px solid var(--rule);
+      color: var(--ink-3); margin-right: 6px;
+      vertical-align: 1px; letter-spacing: 0.03em;
+    }
+    .step-tag-accent { border-color: var(--accent); color: var(--accent); }
+
+    .branch-group {
+      margin: 6px 0 6px 20px;
+      padding-left: 12px;
+      border-left: 2px solid var(--rule-soft);
+    }
+    .branch-label {
+      font-size: 11px; font-style: italic; color: var(--ink-3);
+      margin-bottom: 4px; margin-top: 6px;
+    }
+    .branch-label-yes { color: var(--sage); }
+    .branch-label-no { color: var(--rust-red); }
+    .branch-group .step-list li { border-left-color: var(--rule-soft); }
+    .branch-group .step-list li::before { background: var(--rule-soft); }
+
+    .chapter-card {
+      border: 1px solid var(--rule); padding: 2rem;
+      background: var(--bg-2); transition: all 0.4s ease;
+      height: 100%; display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .chapter-card:hover { border-color: var(--accent); }
+
+    .stat-table { border: 1px solid var(--rule); border-collapse: collapse; width: 100%; }
+    .stat-table td { padding: 10px 16px; border-bottom: 1px solid var(--rule); font-size: 13px; }
+    .stat-table tr:last-child td { border-bottom: none; }
+    .stat-table td:first-child { font-variant: small-caps; letter-spacing: 0.08em; color: var(--ink-3); font-size: 11px; }
+    .stat-table td:last-child { text-align: right; font-family: 'Fraunces', serif; font-weight: 700; }
+
+    .reveal { opacity: 0; transform: translateY(14px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .rd1 { transition-delay: 0.1s; } .rd2 { transition-delay: 0.2s; }
+    .rd3 { transition-delay: 0.3s; } .rd4 { transition-delay: 0.4s; }
+    .rd5 { transition-delay: 0.5s; } .rd6 { transition-delay: 0.6s; }
+
+    @keyframes gentleFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+    .float-gentle { animation: gentleFloat 5s ease-in-out infinite; }
+
+    @media (max-width: 768px) {
+      .hero-grid { grid-template-columns: 1fr !important; }
+      .cheat-grid { grid-template-columns: 1fr 1fr !important; }
+      .hover-block:hover { margin-left: 0; margin-right: 0; }
+      .drop-cap::first-letter { font-size: 48px; }
+      .panel.open { padding-left: 0; }
+      .practice-header { flex-wrap: wrap; }
+    }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--ink-3); }
+  </style>
+</head>
+<body>
+
+  <svg class="paper-grain" aria-hidden="true">
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter>
+    <rect width="100%" height="100%" filter="url(#grain)"/>
+  </svg>
+
+  <svg style="position:absolute;width:0;height:0;" aria-hidden="true">
+    <defs>
+      <marker id="ah" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="5" markerHeight="5" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="var(--ink-2)"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <!-- ═══════════ Masthead ═══════════ -->
+  <header class="masthead">
+    <div style="max-width:1280px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; padding-top:14px; padding-bottom:14px;">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <a href="#" style="text-decoration:none; color:var(--ink); display:flex; align-items:center; gap:8px;">
+          <span class="font-display" style="font-weight:900; font-size:18px; font-variation-settings:'opsz' 36;">§</span>
+          <span class="small-caps" style="font-size:12px; font-weight:500;">MAANG Journey</span>
+        </a>
+        <span style="color:var(--rule);">·</span>
+        <nav style="display:flex; gap:20px;" class="hidden md:flex">
+          <a href="#cheatsheet" class="btn-ghost" style="font-size:11px; border:none; padding:0;">Cheat Sheet</a>
+          <a href="#practice" class="btn-ghost" style="font-size:11px; border:none; padding:0;">Practice</a>
+        </nav>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span class="label hidden sm:inline" style="color:var(--sage);">Day i</span>
+        <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">Dim</button>
+      </div>
+    </div>
+    <div class="progress-bar" id="progressBar"></div>
+  </header>
+
+  <!-- ═══════════ Hero ═══════════ -->
+  <section style="padding: 5rem 0 3rem;">
+    <div style="max-width:1280px; margin:0 auto; padding:0 24px;">
+      <div class="hero-grid" style="display:grid; grid-template-columns: 7fr 5fr; gap: 48px; align-items:start;">
+        <div>
+          <p class="label reveal" style="margin-bottom:1.5rem;">Chapter I · Starting from Absolute Zero</p>
+          <h1 class="font-display reveal rd1" style="font-size: clamp(40px, 6vw, 72px); font-weight: 900; line-height: 1.0; letter-spacing: -0.02em; font-variation-settings: 'opsz' 144; margin-bottom: 2rem;">
+            How Logic<br><em>Actually</em> Works
+          </h1>
+          <p class="reveal rd2 drop-cap" style="font-size: 17px; line-height: 1.8; color: var(--ink-2); max-width: 540px; margin-bottom: 1.5rem;">
+            Computers aren't smart. They just follow strict, step-by-step logic. Visualizing this logic on paper forces you to break down problems exactly how a machine reads them — without skipping a single step. Today's topic: <strong style="color:var(--accent); font-weight:500;">Flowcharts</strong>.
+          </p>
+          <div class="reveal rd3" style="display:flex; gap:12px; flex-wrap:wrap;">
+            <a href="#practice" class="btn-primary">Begin Practice <span class="btn-arrow">→</span></a>
+            <a href="#cheatsheet" class="btn-ghost">Cheat Sheet</a>
+          </div>
+        </div>
+        <div class="reveal rd4">
+          <div class="chapter-card">
+            <div>
+              <p class="label" style="margin-bottom:0.75rem;">§ Chapter Details</p>
+              <h2 class="font-display" style="font-size: 28px; font-weight: 700; font-variation-settings: 'opsz' 36; line-height: 1.15; margin-bottom: 0.5rem;">
+                Flowcharts <em>&</em><br>Decision Trees
+              </h2>
+              <p style="font-size: 14px; color: var(--ink-3); line-height: 1.6;">
+                The foundational mental model for all computational thinking.
+              </p>
+            </div>
+            <div style="border-top: 1px dotted var(--rule); padding-top: 1rem; margin-top: 1.5rem;">
+              <table class="stat-table">
+                <tr><td>Series</td><td style="font-family:'Fraunces',serif; font-weight:500; font-size:13px; text-align:right;">MAANG Prep</td></tr>
+                <tr><td>Day</td><td style="text-align:right;">01 <span style="color:var(--ink-3); font-weight:400;">of ∞</span></td></tr>
+                <tr><td>Exercises</td><td style="text-align:right; font-family:'Fraunces',serif; font-weight:500; font-size:13px;">5</td></tr>
+                <tr><td>Status</td><td style="text-align:right;"><span style="color:var(--sage); font-size:12px;">● Complete</span></td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ornament" style="max-width:1280px; margin:0 auto; padding-left:24px; padding-right:24px;">§</div>
+
+  <!-- ═══════════ Cheat Sheet ═══════════ -->
+  <section id="cheatsheet" style="padding: 1rem 0 3rem;">
+    <div style="max-width:1280px; margin:0 auto; padding:0 24px;">
+      <p class="label reveal" style="margin-bottom:0.75rem;">Cheat Sheet</p>
+      <h2 class="font-display reveal rd1" style="font-size: clamp(28px, 4vw, 42px); font-weight: 700; font-variation-settings: 'opsz' 72; line-height: 1.1; margin-bottom: 0.75rem;">
+        The Four Shapes You <em>Need</em>
+      </h2>
+      <p class="reveal rd2" style="font-size: 15px; color: var(--ink-3); max-width: 480px; margin-bottom: 2.5rem;">
+        Every flowchart is built from these four building blocks. Refer back as you solve the exercises below.
+      </p>
+      <div class="cheat-grid reveal rd3" style="display:grid; grid-template-columns: repeat(4, 1fr);">
+        <div class="shape-card" style="border-right:none;">
+          <div class="float-gentle" style="margin-bottom: 2rem; display:flex; justify-content:center;">
+            <svg width="140" height="70" viewBox="0 0 140 70">
+              <ellipse cx="70" cy="35" rx="62" ry="28" fill="var(--bg)" stroke="var(--ink-2)" stroke-width="1.5"/>
+              <text x="70" y="40" text-anchor="middle" fill="var(--ink)" font-family="'Newsreader',serif" font-size="12">Start / End</text>
+            </svg>
+          </div>
+          <p class="label" style="margin-bottom:0.5rem; color:var(--ink-2);">Terminal</p>
+          <h3 class="font-display" style="font-size: 20px; font-weight: 700; font-variation-settings: 'opsz' 36; margin-bottom: 0.75rem;">Oval</h3>
+          <p style="font-size: 14px; color: var(--ink-3); line-height: 1.7;">
+            Marks where a process begins and ends. Every flowchart needs exactly one of each — no more, no fewer.
+          </p>
+        </div>
+        <div class="shape-card" style="border-right:none;">
+          <div class="float-gentle" style="margin-bottom: 2rem; display:flex; justify-content:center; animation-delay: 0.4s;">
+            <svg width="140" height="70" viewBox="0 0 140 70">
+              <rect x="8" y="10" width="124" height="50" rx="3" fill="var(--bg)" stroke="var(--ink-2)" stroke-width="1.5"/>
+              <text x="70" y="40" text-anchor="middle" fill="var(--ink)" font-family="'Newsreader',serif" font-size="12">Do something</text>
+            </svg>
+          </div>
+          <p class="label" style="margin-bottom:0.5rem; color:var(--ink-2);">Process</p>
+          <h3 class="font-display" style="font-size: 20px; font-weight: 700; font-variation-settings: 'opsz' 36; margin-bottom: 0.75rem;">Rectangle</h3>
+          <p style="font-size: 14px; color: var(--ink-3); line-height: 1.7;">
+            Represents an action or operation. "Add two numbers," "Save file," "Send email" — each gets its own box.
+          </p>
+        </div>
+        <div class="shape-card">
+          <div class="float-gentle" style="margin-bottom: 2rem; display:flex; justify-content:center; animation-delay: 0.8s;">
+            <svg width="140" height="90" viewBox="0 0 140 90">
+              <polygon points="70,5 135,45 70,85 5,45" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
+              <text x="70" y="42" text-anchor="middle" fill="var(--accent)" font-family="'Newsreader',serif" font-size="11" font-weight="500">Condition?</text>
+              <text x="70" y="56" text-anchor="middle" fill="var(--ink-3)" font-family="'Newsreader',serif" font-size="10" font-style="italic">yes / no</text>
+            </svg>
+          </div>
+          <p class="label" style="margin-bottom:0.5rem; color:var(--accent);">Decision</p>
+          <h3 class="font-display" style="font-size: 20px; font-weight: 700; font-variation-settings: 'opsz' 36; margin-bottom: 0.75rem;">Diamond</h3>
+          <p style="font-size: 14px; color: var(--ink-3); line-height: 1.7;">
+            The brain of the flowchart. Splits the path into exactly two branches — always a strict yes or no, never maybe.
+          </p>
+        </div>
+        <div class="shape-card">
+          <div class="float-gentle" style="margin-bottom: 2rem; display:flex; justify-content:center; animation-delay: 1.2s;">
+            <svg width="140" height="70" viewBox="0 0 140 70">
+              <polygon points="25,10 135,10 115,60 5,60" fill="var(--bg)" stroke="var(--gold)" stroke-width="1.5"/>
+              <text x="70" y="40" text-anchor="middle" fill="var(--gold)" font-family="'Newsreader',serif" font-size="11" font-weight="500">Input / Output</text>
+            </svg>
+          </div>
+          <p class="label" style="margin-bottom:0.5rem; color:var(--gold);">I/O</p>
+          <h3 class="font-display" style="font-size: 20px; font-weight: 700; font-variation-settings: 'opsz' 36; margin-bottom: 0.75rem;">Parallelogram</h3>
+          <p style="font-size: 14px; color: var(--ink-3); line-height: 1.7;">
+            Represents data entering or leaving the system. "Read name," "Print result" — always a parallelogram, never a rectangle.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ornament" style="max-width:1280px; margin:0 auto; padding-left:24px; padding-right:24px;">§</div>
+
+  <!-- ═══════════ Practice Sheet ═══════════ -->
+  <section id="practice" style="padding: 1rem 0 4rem;">
+    <div style="max-width:1280px; margin:0 auto; padding:0 24px;">
+      <p class="label reveal" style="margin-bottom:0.75rem;">Practice Sheet</p>
+      <h2 class="font-display reveal rd1" style="font-size: clamp(28px, 4vw, 42px); font-weight: 700; font-variation-settings: 'opsz' 72; line-height: 1.1; margin-bottom: 0.75rem;">
+        Draw the <em>Flowchart</em>
+      </h2>
+      <p class="reveal rd2" style="font-size: 15px; color: var(--ink-3); max-width: 520px; margin-bottom: 2.5rem;">
+        Try each problem on paper first. Then reveal the logic steps and flowchart to check your work. Only one answer is visible at a time.
+      </p>
+
+      <!-- Q1 -->
+      <div class="practice-item reveal rd2">
+        <div class="practice-header">
+          <span class="q-number">Q i</span>
+          <div class="q-content">
+            <div class="q-title-row">
+              <span class="q-title">Sum of Two Numbers</span>
+              <span class="badge badge-easy">Easy</span>
+            </div>
+            <p class="hint-text">Hint: You need ovals (start/end), parallelograms (input/output), and a rectangle (calculate) — no decisions.</p>
+            <div class="q-actions">
+              <button class="btn-show" onclick="togglePanel('q1-logic', this)">
+                <span class="arrow-icon">▶</span> Show Logic
+              </button>
+              <button class="btn-show" onclick="togglePanel('q1-solution', this)">
+                <span class="arrow-icon">▶</span> Show Solution
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="panel" id="q1-logic">
+          <div class="panel-inner">
+            <p class="panel-label">Logic Steps</p>
+            <ol class="step-list">
+              <li><span class="step-tag">Oval</span> Start</li>
+              <li><span class="step-tag" style="border-color:var(--gold);color:var(--gold);">Para</span> Input first number (A)</li>
+              <li><span class="step-tag" style="border-color:var(--gold);color:var(--gold);">Para</span> Input second number (B)</li>
+              <li><span class="step-tag">Rect</span> Calculate Sum = A + B</li>
+              <li><span class="step-tag" style="border-color:var(--gold);color:var(--gold);">Para</span> Output Sum</li>
+              <li><span class="step-tag">Oval</span> End</li>
+            </ol>
+          </div>
+        </div>
+        <div class="panel" id="q1-solution">
+          <div class="panel-inner">
+            <p class="panel-label">Flowchart</p>
+            <div style="text-align:center; padding:0.5rem 0;">
+              <svg viewBox="0 0 300 340" style="max-width:340px; width:100%;">
+                <style>
+                  .ov{fill:var(--bg);stroke:var(--ink-2);stroke-width:1.5}
+                  .rc{fill:var(--bg);stroke:var(--ink-2);stroke-width:1.5}
+                  .pg{fill:var(--bg);stroke:var(--gold);stroke-width:1.5}
+                  .tx{font-family:'Newsreader',serif;fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+                  .ar{stroke:var(--ink-2);stroke-width:1.2;marker-end:url(#ah)}
+                </style>
+                <ellipse cx="150" cy="22" rx="55" ry="18" class="ov"/>
+                <text x="150" y="23" class="tx" font-size="12">Start</text>
+                <line x1="150" y1="40" x2="150" y2="62" class="ar"/>
+                <polygon points="90,62 225,62 210,96 75,96" class="pg"/>
+                <text x="150" y="83" class="tx" font-size="11">Input A</text>
+                <line x1="150" y1="96" x2="150" y2="118" class="ar"/>
+                <polygon points="90,118 225,118 210,152 75,152" class="pg"/>
+                <text x="150" y="139" class="tx" font-size="11">Input B</text>
+                <line x1="150" y1="152" x2="150" y2="174" class="ar"/>
+                <rect x="75" y="174" width="150" height="34" rx="3" class="rc"/>
+                <text x="150" y="195" class="tx" font-size="11">Sum = A + B</text>
+                <line x1="150" y1="208" x2="150" y2="230" class="ar"/>
+                <polygon points="90,230 225,230 210,264 75,264" class="pg"/>
+                <text x="150" y="251" class="tx" font-size="11">Output Sum</text>
+                <line x1="150" y1="264" x2="150" y2="286" class="ar"/>
+                <ellipse cx="150" cy="308" rx="55" ry="18" class="ov"/>
+                <text x="150" y="309" class="tx" font-size="12">End</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="practice-item reveal rd3">
+        <div class="practice-header">
+          <span class="q-number">Q ii</span>
+          <div class="q-content">
+            <div class="q-title-row">
+              <span class="q-title">Simple Interest</span>
+              <span class="badge badge-easy">Easy</span>
+            </div>
+            <p class="hint-text">Hint: The formula is SI = (P × R × T) / 100. Three parallelogram inputs, one rectangle formula, one parallelogram output.</p>
+            <div class="q-actions">
+              <button class="btn-show" onclick="togglePanel('q2-logic', this)">
+                <span class="arrow-icon">▶</span> Show Logic
+              </button>
+              <button class="btn-show" onclick="togglePanel('q2-solution', this)">
+                <span class="arrow-icon">▶</span> Show Solution
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="panel" id="q2-logic">
+          <div class="panel-inner">
+            <p class="panel-label">Logic Steps</p>
+            <ol class="step-list">
+              <li><span class="step-tag">Oval</span> Start</li>
+              <li><span class="step-tag" style="border-color:var(--gold);color:var(--gold);">Para</span> Input Principal (P)</li>
+              <li><span class="step-tag" style="border-color:var(--gold);color:var(--gold);">Para</span> Input Rate (R)</li>
+              <li><span class="step-tag" style="border-color:var(--gold);color:var(--gold);">Para</span> Input Time (T)</li>
+              <li><span class="step-tag">Rect</span> Calculate SI = (P × R × T) / 100</li>
+              <li><span class="step-tag" style="border-color:var(--gold);color:var(--gold);">Para</span> Output SI</li>
+              <li><span class="step-tag">Oval</span> End</li>
+            </ol>
+          </div>
+        </div>
+        <div class="panel" id="q2-solution">
+          <div class="panel-inner">
+            <p class="panel-label">Flowchart</p>
+            <div style="text-align:center; padding:0.5rem 0;">
+              <svg viewBox="0 0 300 400" style="max-width:340px; width:100%;">
+                <style>
+                  .ov{fill:var(--bg);stroke:var(--ink-2);stroke-width:1.5}
+                  .rc{fill:var(--bg);stroke:var(--ink-2);stroke-width:1.5}
+                  .pg{fill:var(--bg);stroke:var(--gold);stroke-width:1.5}
+                  .tx{font-family:'Newsreader',serif;fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+                  .ar{stroke:var(--ink-2);stroke-width:1.2;marker-end:url(#ah)}
+                </style>
+                <ellipse cx="150" cy="22" rx="55" ry="18" class="ov"/>
+                <text x="150" y="23" class="tx" font-size="12">Start</text>
+                <line x1="150" y1="40" x2="150" y2="62" class="ar"/>
+                <polygon points="90,62 225,62 210,96 75,96" class="pg"/>
+                <text x="150" y="83" class="tx" font-size="11">Input P</text>
+                <line x1="150" y1="96" x2="150" y2="118" class="ar"/>
+                <polygon points="90,118 225,118 210,152 75,152" class="pg"/>
+                <text x="150" y="139" class="tx" font-size="11">Input R</text>
+                <line x1="150" y1="152" x2="150" y2="174" class="ar"/>
+                <polygon points="90,174 225,174 210,208 75,208" class="pg"/>
+                <text x="150" y="195" class="tx" font-size="11">Input T</text>
+                <line x1="150" y1="208" x2="150" y2="230" class="ar"/>
+                <rect x="55" y="230" width="190" height="34" rx="3" class="rc"/>
+                <text x="150" y="251" class="tx" font-size="11">SI = (P * R * T) / 100</text>
+                <line x1="150" y1="264" x2="150" y2="286" class="ar"/>
+                <polygon points="90,286 225,286 210,320 75,320" class="pg"/>
+                <text x="150" y="307" class="tx" font-size="11">Output SI</text>
+                <line x1="150" y1="320" x2="150" y2="342" class="ar"/>
+                <ellipse cx="150" cy="364" rx="55" ry="18" class="ov"/>
+                <text x="150" y="365" class="tx" font-size="12">End</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="practice-item reveal rd3">
+        <div class="practice-header">
+          <span class="q-number">Q iii</span>
+          <div class="q-content">
+            <div class="q-title-row">
+              <span class="q-title">Maximum of Three Numbers</span>
+              <span class="badge badge-medium">Medium</span>
+            </div>
+            <p class="hint-text">Hint: Compare two numbers first, then compare the winner with the third. You'll need two diamonds.</p>
+            <div class="q-actions">
+              <button class="btn-show" onclick="togglePanel('q3-logic', this)">
+                <span class="arrow-icon">▶</span> Show Logic
+              </button>
+              <button class="btn-show" onclick="togglePanel('q3-solution', this)">
+                <span class="arrow-icon">▶</span> Show Solution
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="panel" id="q3-logic">
+          <div class="panel-inner">
+            <p class="panel-label">Logic Steps</p>
+            <ol class="step-list">
+              <li><span class="step-tag">Oval</span> Start</li>
+              <li><span class="step-tag" style="border-color:var(--gold);color:var(--gold);">Para</span> Input A, B, C</li>
+              <li><span class="step-tag step-tag-accent">Diamond</span> Is A > B?
+                <div class="branch-group">
+                  <p class="branch-label branch-label-yes">→ Yes path:</p>
+                  <ol class="step-list">
+                    <li><span class="step-tag step-tag-accent">Diamond</span> Is A > C?
+                      <div class="branch-group">
+                        <p class="branch-label branch-label-yes">→ Yes: Max = A</p>
+                        <p class="branch-label branch-label-no">→ No: Max = C</p>
+                      </div>
+                    </li>
+                  </ol>
+                </div>
+                <div class="branch-group">
+                  <p class="branch-label branch-label-no">→ No path:</p>
+                  <ol class="step-list">
+                    <li><span class="step-tag step-tag-accent">Diamond</span> Is B > C?
+                      <div class="branch-group">
+                        <p class="branch-label branch-label-yes">→ Yes: Max = B</p>
+                        <p class="branch-label branch-label-no">→ No: Max = C</p>
+                      </div>
+                    </li>
+                  </ol>
+                </div>
+              </li>
+              <li><span class="step-tag" style="border-color:var(--gold);color:var(--gold);">Para</span> Output Max</li>
+              <li><span class="step-tag">Oval</span> End</li>
+            </ol>
+          </div>
+        </div>
+        <div class="panel" id="q3-solution">
+          <div class="panel-inner">
+            <p class="panel-label">Flowchart</p>
+            <div style="text-align:center; padding:0.5rem 0;">
+              <svg viewBox="0 0 520 360" style="max-width:560px; width:100%;">
+                <style>
+                  .ov{fill:var(--bg);stroke:var(--ink-2);stroke-width:1.5}
+                  .rc{fill:var(--bg);stroke:var(--ink-2);stroke-width:1.5}
+                  .pg{fill:var(--bg);stroke:var(--gold);stroke-width:1.5}
+                  .dm{fill:var(--bg);stroke:var(--accent);stroke-width:1.5}
+                  .tx{font-family:'Newsreader',serif;fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+                  .dt{font-family:'Newsreader',serif;fill:var(--accent);text-anchor:middle;dominant-baseline:central;font-size:11px}
+                  .lt{font-family:'Newsreader',serif;fill:var(--sage);font-size:10px;font-style:italic}
+                  .lf{font-family:'Newsreader',serif;fill:var(--rust-red);font-size:10px;font-style:italic}
+                  .ar{stroke:var(--ink-2);stroke-width:1.2;marker-end:url(#ah)}
+                </style>
+                <ellipse cx="260" cy="22" rx="55" ry="18" class="ov"/>
+                <text x="260" y="23" class="tx" font-size="12">Start</text>
+                <line x1="260" y1="40" x2="260" y2="60" class="ar"/>
+                <polygon points="200,60 335,60 320,92 185,92" class="pg"/>
+                <text x="260" y="78" class="tx" font-size="11">Input A, B, C</text>
+                <line x1="260" y1="92" x2="260" y2="118" class="ar"/>
+                <polygon points="260,118 330,150 260,182 190,150" class="dm"/>
+                <text x="260" y="147" class="dt">A &gt; B?</text>
+                <text x="275" y="115" class="lt">Yes</text>
+                <text x="197" y="115" class="lf">No</text>
+                <line x1="330" y1="150" x2="395" y2="150" class="ar"/>
+                <polygon points="430,118 490,150 430,182 370,150" class="dm"/>
+                <text x="430" y="147" class="dt">A &gt; C?</text>
+                <text x="445" y="115" class="lt">Yes</text>
+                <text x="377" y="115" class="lf">No</text>
+                <line x1="490" y1="150" x2="510" y2="150" class="ar"/>
+                <line x1="510" y1="150" x2="510" y2="260" class="ar"/>
+                <text x="510" y="215" class="tx" font-size="10" fill="var(--sage)">Max = A</text>
+                <line x1="430" y1="182" x2="430" y2="260" class="ar"/>
+                <text x="430" y="228" class="tx" font-size="10" fill="var(--rust-red)">Max = C</text>
+                <line x1="190" y1="150" x2="125" y2="150" class="ar"/>
+                <polygon points="90,118 150,150 90,182 30,150" class="dm"/>
+                <text x="90" y="147" class="dt">B &gt; C?</text>
+                <text x="105" y="115" class="lt">Yes</text>
+                <text x="37" y="115" class="lf">No</text>
+                <line x1="150" y1="150" x2="170" y2="150" class="ar"/>
+                <line x1="170" y1="150" x2="170" y2="260" class="ar"/>
+                <text x="170" y="215" class="tx" font-size="10" fill="var(--sage)">Max = B</text>
+                <line x1="30" y1="150" x2="10" y2="150" class="ar"/>
+                <line x1="10" y1="150" x2="10" y2="260" class="ar"/>
+                <text x="10" y="215" class="tx" font-size="10" fill="var(--rust-red)">Max = C</text>
+                <line x1="10" y1="260" x2="260" y2="260" class="ar"/>
+                <line x1="170" y1="260" x2="260" y2="260" class="ar"/>
+                <line x1="430" y1="260" x2="260" y2="260" class="ar"/>
+                <line x1="510" y1="260" x2="260" y2="260" class="ar"/>
+                <polygon points="200,268 335,268 320,300 185,300" class="pg"/>
+                <text x="260" y="286" class="tx" font-size="11">Output Max</text>
+                <line x1="260" y1="300" x2="260" y2="322" class="ar"/>
+                <ellipse cx="260" cy="342" rx="55" ry="18" class="ov"/>
+                <text x="260" y="343" class="tx" font-size="12">End</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q4 (Hard) -->
+      <div class="practice-item reveal rd4">
+        <div class="practice-header">
+          <span class="q-number" style="color:var(--rust-red);">Q iv</span>
+          <div class="q-content">
+            <div class="q-title-row">
+              <span class="q-title" style="color:var(--rust-red);">Number is Prime or Not</span>
+              <span class="badge badge-hard">Hard</span>
+            </div>
+            <p class="hint-text">Hint: A prime number is only divisible by 1 and itself. You'll need a loop that checks divisibility from 2 up to N−1, and a counter or flag that flips if any divisor is found. Think: diamond inside a loop.</p>
+            <div class="q-actions">
+              <button class="btn-show" onclick="togglePanel('q4-logic', this)">
+                <span class="arrow-icon">▶</span> Show Logic
+              </button>
+              <button class="btn-show" onclick="togglePanel('q4-solution', this)">
+                <span class="arrow-icon">▶</span> Show Solution
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="panel" id="q4-logic">
+          <div class="panel-inner">
+            <p class="panel-label">Logic Steps</p>
+            <ol class="step-list">
+              <li><span class="step-tag">Oval</span> Start</li>
+              <li><span class="step-tag" style="border-color:var(--gold);color:var(--gold);">Para</span> Input N</li>
+              <li><span class="step-tag">Rect</span> Set I = 2, Flag = 0</li>
+              <li><span class="step-tag step-tag-accent">Diamond</span> Is I ≤ N − 1?
+                <div class="branch-group">
+                  <p class="branch-label branch-label-yes">→ Yes (keep checking):</p>
+                  <ol class="step-list">
+                    <li><span class="step-tag step-tag-accent">Diamond</span> Is N % I == 0?
+                      <div class="branch-group">
+                        <p class="branch-label branch-label-yes">→ Yes: Set Flag = 1 (not prime)</p>
+                        <p class="branch-label branch-label-no">→ No: do nothing</p>
+                      </div>
+                    </li>
+                    <li><span class="step-tag">Rect</span> Increment I = I + 1</li>
+                    <li><span class="step-tag" style="border-color:var(--ink-3); color:var(--ink-3);">Loop</span> Go back to "Is I ≤ N − 1?"</li>
+                  </ol>
+                </div>
+                <div class="branch-group">
+                  <p class="branch-label branch-label-no">→ No (loop done):</p>
+                  <ol class="step-list">
+                    <li><span class="step-tag step-tag-accent">Diamond</span> Is Flag == 0?
+                      <div class="branch-group">
+                        <p class="branch-label branch-label-yes">→ Yes: Print "Prime"</p>
+                        <p class="branch-label branch-label-no">→ No: Print "Not Prime"</p>
+                      </div>
+                    </li>
+                  </ol>
+                </div>
+              </li>
+              <li><span class="step-tag">Oval</span> End</li>
+            </ol>
+          </div>
+        </div>
+        <div class="panel" id="q4-solution">
+          <div class="panel-inner">
+            <p class="panel-label">Flowchart</p>
+            <div style="text-align:center; padding:0.5rem 0;">
+              <svg viewBox="0 0 520 400" style="max-width:560px; width:100%;">
+                <style>
+                  .ov{fill:var(--bg);stroke:var(--ink-2);stroke-width:1.5}
+                  .rc{fill:var(--bg);stroke:var(--ink-2);stroke-width:1.5}
+                  .pg{fill:var(--bg);stroke:var(--gold);stroke-width:1.5}
+                  .dm{fill:var(--bg);stroke:var(--accent);stroke-width:1.5}
+                  .tx{font-family:'Newsreader',serif;fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+                  .dt{font-family:'Newsreader',serif;fill:var(--accent);text-anchor:middle;dominant-baseline:central;font-size:11px}
+                  .lt{font-family:'Newsreader',serif;fill:var(--sage);font-size:10px;font-style:italic}
+                  .lf{font-family:'Newsreader',serif;fill:var(--rust-red);font-size:10px;font-style:italic}
+                  .ar{stroke:var(--ink-2);stroke-width:1.2;marker-end:url(#ah)}
+                  .lb{stroke:var(--ink-2);stroke-width:1.2;marker-end:url(#ah);fill:none;stroke-dasharray:4,3}
+                </style>
+                <ellipse cx="260" cy="22" rx="55" ry="18" class="ov"/>
+                <text x="260" y="23" class="tx" font-size="12">Start</text>
+                <line x1="260" y1="40" x2="260" y2="60" class="ar"/>
+                <polygon points="200,60 335,60 320,92 185,92" class="pg"/>
+                <text x="260" y="78" class="tx" font-size="11">Input N</text>
+                <line x1="260" y1="92" x2="260" y2="112" class="ar"/>
+                <rect x="170" y="112" width="180" height="32" rx="3" class="rc"/>
+                <text x="260" y="130" class="tx" font-size="11">I = 2, Flag = 0</text>
+                <line x1="260" y1="144" x2="260" y2="170" class="ar"/>
+                <polygon points="260,170 335,200 260,230 185,200" class="dm"/>
+                <text x="260" y="197" class="dt">I ≤ N - 1?</text>
+                <text x="280" y="167" class="lt">Yes</text>
+                <text x="192" y="167" class="lf">No</text>
+                <line x1="335" y1="200" x2="380" y2="200" class="ar"/>
+                <polygon points="410,175 460,200 410,225 360,200" class="dm"/>
+                <text x="410" y="198" class="dt" font-size="10">N % I == 0?</text>
+                <text x="425" y="173" class="lt">Yes</text>
+                <text x="367" y="173" class="lf">No</text>
+                <line x1="460" y1="200" x2="500" y2="200" class="ar"/>
+                <rect x="440" y="210" width="80" height="28" rx="3" class="rc"/>
+                <text x="480" y="226" class="tx" font-size="9">Flag = 1</text>
+                <line x1="480" y1="238" x2="480" y2="260" class="ar"/>
+                <line x1="480" y1="260" x2="440" y2="260" class="ar"/>
+                <line x1="360" y1="200" x2="340" y2="200" class="ar"/>
+                <line x1="340" y1="200" x2="340" y2="270" class="ar"/>
+                <rect x="265" y="270" width="150" height="28" rx="3" class="rc"/>
+                <text x="340" y="286" class="tx" font-size="10">I = I + 1</text>
+                <line x1="265" y1="284" x2="100" y2="284" class="ar"/>
+                <line x1="100" y1="284" x2="100" y2="200" class="ar"/>
+                <path d="M100,200 L185,200" class="ar"/>
+                <line x1="100" y1="284" x2="100" y2="340" class="ar"/>
+                <line x1="185" y1="200" x2="100" y2="200" class="ar"/>
+                <line x1="100" y1="200" x2="100" y2="340" class="ar"/>
+                <line x1="100" y1="340" x2="260" y2="340" class="ar"/>
+                <polygon points="260,320 310,340 260,360 210,340" class="dm"/>
+                <text x="260" y="343" class="dt" font-size="10">Flag == 0?</text>
+                <text x="277" y="317" class="lt">Yes</text>
+                <text x="217" y="317" class="lf">No</text>
+                <line x1="310" y1="340" x2="375" y2="340" class="ar"/>
+                <polygon points="348,327 428,327 420,353 340,353" class="pg" style="stroke:var(--sage)"/>
+                <text x="384" y="342" class="tx" font-size="10" fill="var(--sage)">Prime</text>
+                <line x1="210" y1="340" x2="145" y2="340" class="ar"/>
+                <polygon points="98,327 198,327 190,353 90,353" class="pg" style="stroke:var(--rust-red)"/>
+                <text x="145" y="342" class="tx" font-size="10" fill="var(--rust-red)">Not Prime</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="practice-item reveal rd5">
+        <div class="practice-header">
+          <span class="q-number">Q v</span>
+          <div class="q-content">
+            <div class="q-title-row">
+              <span class="q-title">Area of a Circle</span>
+              <span class="badge badge-easy">Easy</span>
+            </div>
+            <p class="hint-text">Hint: Formula is A = π × r². One parallelogram input, one rectangle calculation, one parallelogram output. No decisions needed.</p>
+            <div class="q-actions">
+              <button class="btn-show" onclick="togglePanel('q5-logic', this)">
+                <span class="arrow-icon">▶</span> Show Logic
+              </button>
+              <button class="btn-show" onclick="togglePanel('q5-solution', this)">
+                <span class="arrow-icon">▶</span> Show Solution
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="panel" id="q5-logic">
+          <div class="panel-inner">
+            <p class="panel-label">Logic Steps</p>
+            <ol class="step-list">
+              <li><span class="step-tag">Oval</span> Start</li>
+              <li><span class="step-tag" style="border-color:var(--gold);color:var(--gold);">Para</span> Input radius (r)</li>
+              <li><span class="step-tag">Rect</span> Calculate Area = 3.14159 × r × r</li>
+              <li><span class="step-tag" style="border-color:var(--gold);color:var(--gold);">Para</span> Output Area</li>
+              <li><span class="step-tag">Oval</span> End</li>
+            </ol>
+          </div>
+        </div>
+        <div class="panel" id="q5-solution">
+          <div class="panel-inner">
+            <p class="panel-label">Flowchart</p>
+            <div style="text-align:center; padding:0.5rem 0;">
+              <svg viewBox="0 0 300 300" style="max-width:340px; width:100%;">
+                <style>
+                  .ov{fill:var(--bg);stroke:var(--ink-2);stroke-width:1.5}
+                  .rc{fill:var(--bg);stroke:var(--ink-2);stroke-width:1.5}
+                  .pg{fill:var(--bg);stroke:var(--gold);stroke-width:1.5}
+                  .tx{font-family:'Newsreader',serif;fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+                  .ar{stroke:var(--ink-2);stroke-width:1.2;marker-end:url(#ah)}
+                </style>
+                <ellipse cx="150" cy="22" rx="55" ry="18" class="ov"/>
+                <text x="150" y="23" class="tx" font-size="12">Start</text>
+                <line x1="150" y1="40" x2="150" y2="62" class="ar"/>
+                <polygon points="90,62 225,62 210,96 75,96" class="pg"/>
+                <text x="150" y="83" class="tx" font-size="11">Input r</text>
+                <line x1="150" y1="96" x2="150" y2="118" class="ar"/>
+                <rect x="55" y="118" width="190" height="34" rx="3" class="rc"/>
+                <text x="150" y="139" class="tx" font-size="11">Area = 3.14159 * r * r</text>
+                <line x1="150" y1="152" x2="150" y2="174" class="ar"/>
+                <polygon points="90,174 225,174 210,208 75,208" class="pg"/>
+                <text x="150" y="195" class="tx" font-size="11">Output Area</text>
+                <line x1="150" y1="208" x2="150" y2="230" class="ar"/>
+                <ellipse cx="150" cy="252" rx="55" ry="18" class="ov"/>
+                <text x="150" y="253" class="tx" font-size="12">End</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="ornament" style="max-width:1280px; margin:0 auto; padding-left:24px; padding-right:24px;">§</div>
+
+  <!-- ═══════════ Outro ═══════════ -->
+  <section style="padding: 2rem 0 4rem;">
+    <div style="max-width:1280px; margin:0 auto; padding:0 24px; text-align:center; max-width:600px; margin-left:auto; margin-right:auto;">
+      <div class="reveal" style="display:inline-flex; align-items:center; gap:8px; padding:6px 16px; border:1px solid var(--sage); margin-bottom:2rem;">
+        <span style="color:var(--sage); font-size:12px;">●</span>
+        <span class="label" style="color:var(--sage);">Day I Complete</span>
+      </div>
+      <h2 class="font-display reveal rd1" style="font-size: clamp(28px, 4vw, 38px); font-weight: 700; font-variation-settings: 'opsz' 72; line-height: 1.1; margin-bottom: 1rem;">
+        Ready for <em>Day</em> II?
+      </h2>
+      <p class="reveal rd2" style="font-size: 15px; color: var(--ink-3); line-height: 1.7; margin-bottom: 2.5rem;">
+        Hit follow to watch me struggle through the next topic on this MAANG journey. No gatekeeping — just raw learning in public.
+      </p>
+      <div class="reveal rd3" style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+        <button class="btn-primary" onclick="showToast()">Follow for Day II <span class="btn-arrow">→</span></button>
+        <button class="btn-ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})">Return to Top</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ Footer ═══════════ -->
+  <footer style="border-top:1px solid var(--rule); padding: 2rem 0;">
+    <div style="max-width:1280px; margin:0 auto; padding:0 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span class="font-display" style="font-weight:900; font-size:14px; font-variation-settings:'opsz' 36; color:var(--ink-3);">§</span>
+        <span class="label" style="font-size:10px;">MAANG Journey · Day i</span>
+      </div>
+      <p class="label" style="font-size:10px;">Learning in public. No gatekeeping.</p>
+    </div>
+  </footer>
+
+  <!-- ═══════════ Toast ═══════════ -->
+  <div class="toast" id="toast" style="position:fixed; bottom:24px; right:24px; z-index:9998; border:1px solid var(--gold); background:var(--bg-2); padding:16px 24px; display:flex; align-items:center; gap:12px; opacity:0; transform:translateY(20px); transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1); pointer-events:none; max-width:340px;">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="11" stroke="var(--gold)" stroke-width="1.5"/>
+      <path class="toast-check" d="M7 12.5 L10.5 16 L17 9" stroke="var(--sage)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" style="stroke-dasharray:30; stroke-dashoffset:30;"/>
+    </svg>
+    <div>
+      <p style="font-size:13px; font-weight:500; color:var(--ink);">You're in!</p>
+      <p style="font-size:12px; color:var(--ink-3);">See you for Day II</p>
+    </div>
+  </div>
+
+  <script>
+    // ── Reading Progress Bar ──
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      document.getElementById('progressBar').style.width = progress + '%';
+    });
+
+    // ── Theme Toggle ──
+    function toggleTheme() {
+      const html = document.documentElement;
+      const btn = document.getElementById('themeBtn');
+      if (html.dataset.theme === 'light') {
+        html.dataset.theme = 'dim';
+        btn.textContent = 'Light';
+      } else {
+        html.dataset.theme = 'light';
+        btn.textContent = 'Dim';
+      }
+    }
+
+    // ── Accordion: only one panel open at a time ──
+    let currentOpenPanel = null;
+    let currentOpenBtn = null;
+
+    function togglePanel(panelId, btn) {
+      const panel = document.getElementById(panelId);
+
+      // If clicking the same button that's already open → close it
+      if (currentOpenPanel === panelId) {
+        panel.classList.remove('open');
+        btn.classList.remove('active');
+        currentOpenPanel = null;
+        currentOpenBtn = null;
+        return;
+      }
+
+      // Close whatever is currently open
+      if (currentOpenPanel) {
+        const oldPanel = document.getElementById(currentOpenPanel);
+        if (oldPanel) oldPanel.classList.remove('open');
+      }
+      if (currentOpenBtn) {
+        currentOpenBtn.classList.remove('active');
+      }
+
+      // Open the new one
+      panel.classList.add('open');
+      btn.classList.add('active');
+      currentOpenPanel = panelId;
+      currentOpenBtn = btn;
+    }
+
+    // ── Toast ──
+    function showToast() {
+      const toast = document.getElementById('toast');
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateY(0)';
+      toast.style.pointerEvents = 'auto';
+      // Trigger checkmark draw
+      const check = toast.querySelector('.toast-check');
+      check.style.animation = 'none';
+      check.offsetHeight; // reflow
+      check.style.animation = 'drawCheck 0.5s ease-out 0.3s both';
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(20px)';
+        toast.style.pointerEvents = 'none';
+      }, 3500);
+    }
+
+    // Checkmark animation
+    const style = document.createElement('style');
+    style.textContent = '@keyframes drawCheck { to { stroke-dashoffset: 0; } }';
+    document.head.appendChild(style);
+
+    // ── Scroll Reveal ──
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => {
+      revealObserver.observe(el);
+    });
+  </script>
+</body>
+</html>
